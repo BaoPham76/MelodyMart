@@ -2,12 +2,17 @@
 include_once 'lib/session.php';
 include_once 'classes/product.php';
 include_once 'classes/cart.php';
+Session::checkSession('admin');
+$role_id = Session::get('role_id');
+if ($role_id == 1) {
+    header("Location:admin/productlist.php");
+} else {
+    $cart = new cart();
+    $totalQty = $cart->getTotalQtyByUserId();
 
-$cart = new cart();
-$totalQty = $cart->getTotalQtyByUserId();
-
-$product = new product();
-$list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
+    $product = new product();
+    $list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
